@@ -12,10 +12,14 @@ schemes:
   - https
 # will be prefixed to all paths
 #basePath: /v0
+tags:
+  - name: "Security"
+  - name: "Products"
 paths: {
   /authenticate: {
     "x-swagger-router-controller": "authentication",
     "post": {
+      "tags": ["Security"],
       "summary": "User authentication",
       "operationId": "post",
       "parameters": [
@@ -42,6 +46,7 @@ paths: {
   /products/accounts: {
     "x-swagger-router-controller": "accounts",
     "get": {
+      "tags": ["Products"],
       "summary": "Returns user accounts",
       "operationId": "get",
       "responses": {
@@ -66,6 +71,7 @@ paths: {
   /products/cards: {
     "x-swagger-router-controller": "cards",
     "get": {
+      "tags": ["Products"],
       "summary": "Returns user cards",
       "operationId": "get",
       "responses": {
@@ -90,6 +96,7 @@ paths: {
   /products/loans: {
     "x-swagger-router-controller": "loans",
     "get": {
+      "tags": ["Products"],
       "summary": "Returns user loans and mortgages",
       "operationId": "get",
       "responses": {
