@@ -149,13 +149,16 @@ paths: {
       "number": {
         "type": "string"
       },
+      "iban": {
+        "type": "string"
+      },
       "type": {
         "type": "string"
       },
       "currency": {
         "type": "string"
       },
-      "amount": {
+      "balance": {
         "type": "number",
         "format": "double"
       }
