@@ -1,0 +1,244 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Simcity
+  description: Serves Sims banking info por Sopra Bank
+  version: "1.0.0"
+# the domain of the service
+host: "localhost"
+# array of all schemes that your API supsso+ports
+schemes:
+  - https
+# will be prefixed to all paths
+#basePath: /v0
+paths: {
+  /authenticate: {
+    "x-swagger-router-controller": "authentication",
+    "post": {
+      "summary": "User authentication",
+      "operationId": "post",
+      "parameters": [
+        {
+          "name": "body",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "$ref": '#/definitions/credentials'
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Succesful auhtentication. Session created"
+        },
+        "403": {
+          "description": "Forbidden"
+        }
+
+      }
+    }
+  },
+  /products/accounts: {
+    "x-swagger-router-controller": "accounts",
+    "get": {
+      "summary": "Returns user accounts",
+      "operationId": "get",
+      "responses": {
+        "200": {
+          "description": "Customer accounts",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/accounts"
+            }
+          }
+        },
+        "default": {
+          "description": "unexpected error",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    }
+  },
+  /products/cards: {
+    "x-swagger-router-controller": "cards",
+    "get": {
+      "summary": "Returns user cards",
+      "operationId": "get",
+      "responses": {
+        "200": {
+          "description": "Customer cards",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/cards"
+            }
+          }
+        },
+        "default": {
+          "description": "Unexpected error",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    }
+  },
+  /products/loans: {
+    "x-swagger-router-controller": "loans",
+    "get": {
+      "summary": "Returns user loans and mortgages",
+      "operationId": "get",
+      "responses": {
+        "200": {
+          "description": "Customer loans",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/loans"
+            }
+          }
+        },
+        "default": {
+          "description": "Unexpected error",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    }
+  }
+}
+"definitions": {
+  "credentials": {
+    "required": ["username","password"],
+    "properties": {
+      "username": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      }
+    }
+  },
+  "accounts": {
+    "type": "array",
+    "items": {
+      "$ref": "#/definitions/account"
+    }
+  },
+  "account": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "alias": {
+        "type": "string"
+      },
+      "number": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "currency": {
+        "type": "string"
+      },
+      "amount": {
+        "type": "number",
+        "format": "double"
+      }
+    }
+  },
+  "cards": {
+    "type": "array",
+    "items": {
+      "$ref": "#/definitions/card"
+    }
+  },
+  "card": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "alias": {
+        "type": "string"
+      },
+      "number": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "currency": {
+        "type": "string"
+      },
+      "availableBalance": {
+        "type": "number",
+        "format": "double"
+      },
+      "disposedBalance": {
+        "type": "number",
+        "format": "double"
+      },
+      "grantedCredit": {
+        "type": "number",
+        "format": "double"
+      }
+    }
+  },
+  "loans": {
+    "type": "array",
+    "items": {
+      "$ref": "#/definitions/loan"
+    }
+  },
+  "loan": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "alias": {
+        "type": "string"
+      },
+      "number": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "currency": {
+        "type": "string"
+      },
+      "pendingBalance": {
+        "type": "number",
+        "format": "double"
+      },
+      "grantedCredit": {
+        "type": "number",
+        "format": "double"
+      }
+    }
+  },
+  "Error": {
+    "required": [
+      "code",
+      "message"
+    ],
+    "properties": {
+      "code": {
+        "type": "integer",
+        "format": "int32"
+      },
+      "message": {
+        "type": "string"
+      }
+    }
+  }
+}
