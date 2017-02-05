@@ -1,20 +1,19 @@
 'use strict';
 
 const ROOT = `${__dirname}`;
-global.requireFromRoot = function (path) {
-  return require(`${ROOT}/${path}`);
-};
 
 var app = require('connect')();
 var http = require('http');
+var cors = require('cors');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var fs = require('fs');
 var log = require("winston");
 var path = require("path");
 
-var config = requireFromRoot("lib/config")
-var sims = requireFromRoot("lib/sims")
+var config = require.main.require("./lib/config")
+var sims = require.main.require("./lib/sims")
+var sessions = require.main.require("./lib/sessions")
 
 let main = function main(argv) {
 
@@ -32,8 +31,23 @@ let main = function main(argv) {
   //Load users data
   sims.load(config.dataPath);
 
+  //Initialize session database
+  sessions.initialize();
+
   // Initialize the Swagger middleware
   swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+
+    //Enable CORS
+    app.use(function(req, res, next) {
+      res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Content-Type", "application/json");
+      next();
+    });
+
+    //Session Manager
+    app.use(sessions.manage);
+
     // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
     app.use(middleware.swaggerMetadata());
 
@@ -48,8 +62,8 @@ let main = function main(argv) {
 
     // Start the server
     http.createServer(app).listen(config.port, function () {
-      console.log('Your server is listening on port %d (http://localhost:%d)', config.port, config.port);
-      console.log('Swagger-ui is available on http://localhost:%d/docs', config.port);
+      log.info('Your server is listening on port %d (http://localhost:%d)', config.port, config.port);
+      log.info('Docs available on http://localhost:%d/docs', config.port);
     });
   });
 }

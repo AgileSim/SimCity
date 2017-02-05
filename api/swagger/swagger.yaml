@@ -6,7 +6,7 @@ info:
   description: Serves Sims banking info por Sopra Bank
   version: "1.0.0"
 # the domain of the service
-host: "localhost"
+host: "35.156.90.92"
 # array of all schemes that your API supsso+ports
 schemes:
   - https
