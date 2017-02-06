@@ -1,15 +1,14 @@
 'use strict';
 
-const ROOT = `${__dirname}`;
-
-var app = require('connect')();
-var http = require('http');
-var cors = require('cors');
-var swaggerTools = require('swagger-tools');
-var jsyaml = require('js-yaml');
-var fs = require('fs');
-var log = require("winston");
-var path = require("path");
+const app = require('connect')();
+const http = require('http');
+const cors = require('cors');
+const swaggerTools = require('swagger-tools');
+const jsyaml = require('js-yaml');
+const fs = require('fs');
+const log = require("winston");
+const path = require("path");
+const context = require('request-context');
 
 var config = require.main.require("./lib/config")
 var sims = require.main.require("./lib/sims")
@@ -45,8 +44,11 @@ let main = function main(argv) {
       next();
     });
 
+    // wrap requests in the 'request' namespace (can be any string)
+    app.use(context.middleware('session'));
+
     //Session Manager
-    app.use(sessions.manage);
+    app.use(sessions.manage)  ;
 
     // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
     app.use(middleware.swaggerMetadata());
