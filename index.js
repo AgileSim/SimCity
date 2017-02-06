@@ -36,14 +36,6 @@ let main = function main(argv) {
   // Initialize the Swagger middleware
   swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
-    //Enable CORS
-    app.use(function(req, res, next) {
-      res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Content-Type", "application/json");
-      next();
-    });
-
     // wrap requests in the 'request' namespace (can be any string)
     app.use(context.middleware('session'));
 

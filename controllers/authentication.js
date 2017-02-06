@@ -25,6 +25,7 @@ module.exports = {
       log.debug(`User <${req.body.username}> authenticated!`)
       res.statusCode = 200;
       let sessionId = getNewSessionid(req.body.username, req.body.password);
+      res.setHeader("Content-Type", "application/json");
       res.setHeader('session', sessionId)
       sessions.create(sessionId, found[0], Date.now())
     } else {
