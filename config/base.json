@@ -1,5 +1,5 @@
 {
-  "dataPath": "./node_modules/sims",
+  "dataPath": "../Sims",
   "logLevel": "debug",
   "port": 8000
 }

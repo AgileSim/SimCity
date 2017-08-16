@@ -6,10 +6,10 @@ info:
   description: Serves Sims banking info por Sopra Bank
   version: "1.0.0"
 # the domain of the service
-host: "35.156.90.92"
+host: "localhost:8000"
 # array of all schemes that your API supsso+ports
 schemes:
-  - https
+  - http
 # will be prefixed to all paths
 #basePath: /v0
 tags:
@@ -49,6 +49,14 @@ paths: {
       "tags": ["Products"],
       "summary": "Returns user accounts",
       "operationId": "get",
+      "parameters": [
+        {
+          "name": "session",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        }
+      ],
       "responses": {
         "200": {
           "description": "Customer accounts",
@@ -74,6 +82,14 @@ paths: {
       "tags": ["Products"],
       "summary": "Returns user cards",
       "operationId": "get",
+      "parameters": [
+        {
+          "name": "session",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        }
+      ],
       "responses": {
         "200": {
           "description": "Customer cards",
@@ -99,6 +115,14 @@ paths: {
       "tags": ["Products"],
       "summary": "Returns user loans and mortgages",
       "operationId": "get",
+      "parameters": [
+        {
+          "name": "session",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        }
+      ],
       "responses": {
         "200": {
           "description": "Customer loans",
